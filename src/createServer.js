@@ -100,15 +100,25 @@ function createServer(options) {
         "favicon": server.favicon
       };
 
+      function callback(err, response) {
+        if ( err ) return;
+        client.write('server_info', {response: JSON.stringify(response)});
+      }
+
       if(beforePing) {
-        response = beforePing(response, client) || response;
+        if ( beforePing.length > 2 ) {
+          beforePing(response, client, callback);
+        } else {
+          callback(null, beforePing(response, client) || response);
+        }
+      } else {
+        callback(null, response);
       }
 
       client.once('ping', function(packet) {
         client.write('ping', {time: packet.time});
         client.end();
       });
-      client.write('server_info', {response: JSON.stringify(response)});
     }
 
     function onLogin(packet) {
