@@ -16,5 +16,7 @@ module.exports = {
   createDeserializer:serializer.createDeserializer,
   readPackets:readPackets,
   ping: require('./ping'),
-  supportedVersions:require("./version").supportedVersions
+  supportedVersions:require("./version").supportedVersions,
+  minecraftVersion: '1.8', //For Now
+  mcVersion: '1.8'
 };
